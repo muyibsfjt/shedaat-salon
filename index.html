@@ -1,266 +1,281 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Shedaat Professional African Salon in Queens and Brooklyn, New York. Call to book braids, twists, cornrows, and natural hair care.">
-  <title>Shedaat Professional African Salon</title>
-  <style>
-    :root {
-      --pink: #f4a6c7;
-      --hot-pink: #ed5b9b;
-      --light-pink: #fff0f6;
-      --black: #111014;
-      --soft-black: #1c1920;
-      --white: #fff;
-      --muted: #bdb5bc;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--black);
-      color: var(--white);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; }
-    .header {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 18px; padding: 16px 6%;
-      background: rgba(17,16,20,.94); backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(244,166,199,.25);
-    }
-    .brand { font-weight: 900; letter-spacing: 1.4px; font-size: 17px; line-height: 1.2; }
-    .brand span { display: block; color: var(--pink); font-size: 10px; letter-spacing: 3px; margin-top: 4px; }
-    nav { display: flex; gap: 22px; align-items: center; font-size: 13px; }
-    nav a:hover { color: var(--pink); }
-    .button {
-      display: inline-flex; justify-content: center; align-items: center;
-      border: 1px solid var(--pink); background: var(--pink); color: #171017;
-      border-radius: 3px; padding: 12px 19px; font-weight: 800; font-size: 12px;
-      letter-spacing: .8px; text-transform: uppercase; transition: .25s;
-    }
-    .button:hover { background: var(--hot-pink); border-color: var(--hot-pink); transform: translateY(-2px); }
-    .button.outline { background: transparent; color: var(--white); }
-    .hero {
-      min-height: 82vh; display: grid; align-items: center; position: relative; overflow: hidden;
-      padding: 90px 7%; background:
-        radial-gradient(ellipse at 78% 40%, rgba(237,91,155,.20), transparent 44%),
-        linear-gradient(110deg, #111014 0%, #19131a 58%, #2a1723 100%);
-    }
-    .hero:after {
-      content: "SHEDAAT"; position: absolute; right: -3%; bottom: -7%;
-      font-size: clamp(75px, 17vw, 240px); font-weight: 900; letter-spacing: -8px;
-      color: rgba(255,255,255,.035); pointer-events: none; white-space: nowrap;
-    }
-    .hero-content { max-width: 730px; position: relative; z-index: 1; }
-    .eyebrow { color: var(--pink); letter-spacing: 4px; text-transform: uppercase; font-size: 11px; font-weight: 800; }
-    h1 { margin: 18px 0; font-size: clamp(42px, 7vw, 82px); line-height: .98; letter-spacing: -2.5px; }
-    h1 em { color: var(--pink); font-style: normal; }
-    .hero p { max-width: 530px; color: #ddd5dc; font-size: 17px; margin: 22px 0 30px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
-    .ticker { overflow: hidden; background: var(--pink); color: #171017; padding: 12px 0; font-weight: 900; letter-spacing: 2px; white-space: nowrap; }
-    .ticker-track { display: inline-block; animation: slide 26s linear infinite; }
-    .ticker span { margin: 0 22px; }
-    @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-40%); } }
-    section { padding: 82px 7%; }
-    .section-head { max-width: 700px; margin: 0 auto 38px; text-align: center; }
-    .section-head h2 { font-size: clamp(30px, 4.5vw, 48px); line-height: 1.08; margin: 10px 0 14px; letter-spacing: -1px; }
-    .section-head p { color: var(--muted); margin: 0 auto; max-width: 580px; }
-    .services { background: var(--light-pink); color: var(--black); }
-    .services .section-head p { color: #64535d; }
-    .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 1150px; margin: auto; }
-    .service-card { padding: 28px 20px; border: 1px solid #efd1df; background: rgba(255,255,255,.68); transition: .25s; }
-    .service-card:hover { transform: translateY(-5px); border-color: var(--hot-pink); }
-    .service-card .number { color: var(--hot-pink); font-weight: 900; font-size: 12px; letter-spacing: 2px; }
-    .service-card h3 { margin: 15px 0 7px; font-size: 20px; }
-    .service-card p { color: #6b5b64; font-size: 13px; margin: 0; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1200px; margin: auto; }
-    .gallery-card { position: relative; overflow: hidden; background: #29232a; aspect-ratio: 4 / 5; }
-    .gallery-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
-    .gallery-card:hover img { transform: scale(1.06); }
-    .gallery-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 35px 16px 16px; background: linear-gradient(transparent, rgba(0,0,0,.82)); font-weight: 800; }
-    .gallery-label small { display: block; color: var(--pink); text-transform: uppercase; letter-spacing: 2px; font-size: 10px; }
-    .booking { background: linear-gradient(120deg, #241720, #111014 70%); text-align: center; }
-    .booking-inner { max-width: 760px; margin: auto; }
-    .booking h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; margin: 12px 0; }
-    .booking p { color: #d1c6cf; margin-bottom: 26px; }
-    .locations { background: #f9f3f6; color: var(--black); }
-    .locations .section-head p { color: #6b5b64; }
-    .location-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1150px; margin: auto; }
-    .location-card { background: white; padding: 27px; border-top: 3px solid var(--hot-pink); box-shadow: 0 8px 28px rgba(40,15,30,.06); }
-    .location-card .tag { color: #bf3975; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-    .location-card h3 { font-size: 20px; margin: 10px 0; }
-    .location-card p { color: #665b63; min-height: 55px; font-size: 14px; }
-    .location-card .map-link { display: inline-block; margin-top: 12px; color: #b92e6d; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .footer { padding: 36px 7%; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; border-top: 1px solid #33232d; color: #bdb5bc; font-size: 12px; }
-    .footer strong { color: var(--pink); }
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    @media (max-width: 850px) {
-      .service-grid { grid-template-columns: repeat(2, 1fr); }
-      .location-grid { grid-template-columns: 1fr; }
-      .location-card p { min-height: auto; }
-      nav { gap: 12px; }
-      nav a:not(.button) { display: none; }
-    }
-    @media (max-width: 560px) {
-      .header { padding: 14px 5%; }
-      .brand { font-size: 14px; }
-      .header .button { padding: 10px 12px; font-size: 10px; }
-      .hero { min-height: 74vh; padding: 70px 6%; }
-      .hero p { font-size: 15px; }
-      section { padding: 64px 6%; }
-      .service-grid { gap: 10px; }
-      .service-card { padding: 20px 14px; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .gallery-card { aspect-ratio: 3 / 4; }
-      .gallery-label { font-size: 12px; padding: 28px 10px 10px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *:before, *:after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
-      .reveal { opacity: 1; transform: none; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Shedaat Professional African Salon in Queens and Brooklyn, NY. Call to book braids, twists, cornrows and natural hair care.">
+<title>Shedaat Professional African Salon</title>
+<style>
+:root{--pink:#e91e63;--deep:#a80e4b;--gold:#d8ad48;--cream:#fffaf5;--ink:#2a1720;--muted:#745d67;--light:#fff0f6}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--cream);line-height:1.6}
+a{color:inherit}
+.topline{background:var(--deep);color:white;text-align:center;padding:9px;font-size:.88rem;letter-spacing:.04em}
+header{position:sticky;top:0;z-index:10;background:#fffaf5f2;backdrop-filter:blur(12px);border-bottom:1px solid #d8ad4866}
+.nav{max-width:1180px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.mark{width:46px;height:46px;display:grid;place-items:center;flex:none;background:var(--pink);color:white;border:2px solid var(--gold);border-radius:50% 50% 50% 8px;font:italic 1.5rem Georgia}
+.brandname{font:bold 1rem Georgia;line-height:1.2}
+.brandname small{display:block;font:bold .62rem Arial;letter-spacing:.2em;color:var(--deep);margin-top:5px}
+.links{display:flex;align-items:center;gap:20px}
+.links>a:not(.btn){text-decoration:none;font-size:.9rem;font-weight:bold}
+.links>a:hover{color:var(--pink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--pink);color:white;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:99px;box-shadow:0 8px 22px #e91e6333;transition:.2s}
+.btn:hover{background:var(--deep);transform:translateY(-2px)}
+.btn.light{background:white;color:var(--deep);border:1px solid var(--gold);box-shadow:none}
+.hero{overflow:hidden;background:linear-gradient(120deg,#fff0f6,#fff9f4 55%,#f9d7e4)}
+.hero-inner{max-width:1180px;margin:auto;padding:78px 22px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:45px}
+.eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--deep)}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.13}
+h1{font-size:clamp(2.7rem,5.4vw,5.1rem);letter-spacing:-.04em;margin:15px 0}
+h1 em{font-weight:normal;color:var(--pink)}
+.hero p{color:var(--muted);font-size:1.08rem}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.hero-photo{position:relative}
+.hero-photo img{display:block;width:100%;height:460px;object-fit:cover;border:7px solid white;border-radius:180px 180px 22px 22px;box-shadow:0 18px 50px #6310361f;background:#f6dce6}
+.tag{position:absolute;bottom:24px;left:-18px;background:white;border:1px solid var(--gold);border-radius:14px;padding:12px 16px;font-weight:bold;color:var(--deep);box-shadow:0 12px 30px #6310361a}
+section{padding:75px 22px}
+.container{max-width:1180px;margin:auto}
+.heading{text-align:center;max-width:720px;margin:0 auto 36px}
+.heading h2{font-size:clamp(2rem,4vw,3.2rem);margin:10px 0}
+.heading p{color:var(--muted);margin:0}
+.services{background:white}
+.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.service{padding:23px 20px;border:1px solid #f2d6e1;background:linear-gradient(160deg,#fff,#fff5f8);border-radius:18px;transition:.2s}
+.service:hover{transform:translateY(-4px);box-shadow:0 18px 40px #63103615}
+.icon{width:43px;height:43px;display:grid;place-items:center;background:var(--light);color:var(--deep);border-radius:14px;font-size:1.3rem}
+.service h3{font-size:1.2rem;margin:13px 0 7px}
+.service p{font-size:.9rem;color:var(--muted);margin:0}
+.gallery{background:var(--light)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.photo{background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 25px #63103610}
+.photo img{display:block;width:100%;height:300px;object-fit:cover;background:#f6dce6;transition:transform .3s}
+.photo:hover img{transform:scale(1.035)}
+.photo p{margin:0;padding:12px 15px;font-weight:bold}
+.note{text-align:center;font-size:.84rem;color:var(--muted);margin-top:20px}
+.extras{background:var(--cream)}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.pill{background:white;border:1px solid #e8c2d1;color:var(--deep);padding:9px 14px;border-radius:99px;font-weight:bold;font-size:.9rem}
+.locations{background:white}
+.location-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.location{padding:24px;border:1px solid #efd2dd;border-radius:18px;background:#fffafc}
+.num{font:italic bold 2rem Georgia;color:var(--gold)}
+.location h3{margin:7px 0;font-size:1.25rem}
+.location p{color:var(--muted);min-height:50px}
+.location .btn{width:100%;box-shadow:none}
+.callout{background:linear-gradient(120deg,var(--deep),var(--pink));color:white;text-align:center;padding:62px 22px}
+.callout .eyebrow{color:#ffe3a0}
+.callout h2{font-size:clamp(2rem,4vw,3.2rem);margin:10px 0}
+.callout p{color:#ffe8f0}
+.callout .btn{background:white;color:var(--deep);box-shadow:none}
+footer{background:#28131f;color:white;padding:35px 22px 20px}
+.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+footer p{color:#e8cbd6;font-size:.88rem}
+.footlinks{display:flex;gap:16px;flex-wrap:wrap}
+.copyright{max-width:1180px;margin:20px auto 0;padding-top:15px;border-top:1px solid #563344;color:#d7b9c6;font-size:.8rem}
+@media(max-width:900px){
+.hero-inner{grid-template-columns:1fr .8fr;gap:25px}
+.hero-photo img{height:380px}
+.links{gap:12px}
+.links>a:not(.btn){display:none}
+.service-grid{grid-template-columns:repeat(2,1fr)}
+.gallery-grid{grid-template-columns:repeat(2,1fr)}
+.location-grid{grid-template-columns:1fr}
+.location p{min-height:0}
+}
+@media(max-width:620px){
+.topline{font-size:.76rem}
+.nav{padding:10px 13px}
+.mark{width:40px;height:40px}
+.brandname{font-size:.85rem}
+.brandname small{font-size:.53rem}
+.links .btn{padding:10px 13px;font-size:.8rem}
+.hero-inner{grid-template-columns:1fr;padding:50px 18px 60px}
+.hero-photo{max-width:410px;width:100%;margin:auto}
+.hero-photo img{height:350px;border-radius:145px 145px 20px 20px}
+.tag{left:-2px}
+section{padding:55px 16px}
+.service-grid,.gallery-grid{grid-template-columns:1fr 1fr;gap:10px}
+.service{padding:16px 12px}
+.service h3{font-size:1.02rem}
+.service p{font-size:.82rem}
+.photo img{height:210px}
+.photo p{font-size:.83rem;padding:10px}
+.actions .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+*{scroll-behavior:auto!important;transition:none!important}
+}
+</style>
 </head>
 <body>
-  <header class="header">
-    <a class="brand" href="#home">SHEDAAT <span>PROFESSIONAL AFRICAN SALON</span></a>
-    <nav aria-label="Main navigation">
-      <a href="#services">Services</a>
-      <a href="#styles">Our Work</a>
-      <a href="#locations">Locations</a>
-      <a class="button" href="tel:7186752646">Call to Book</a>
-    </nav>
-  </header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-content reveal">
-        <div class="eyebrow">Queens & Brooklyn, New York</div>
-        <h1>Your hair.<br>Your style.<br><em>Your crown.</em></h1>
-        <p>Beautiful braids, clean cornrows, twists, and natural hair care. Find your next look at Shedaat Professional African Salon.</p>
-        <div class="actions">
-          <a class="button" href="tel:7186752646">Call 718-675-2646</a>
-          <a class="button outline" href="#styles">Explore Hairstyles</a>
-        </div>
-      </div>
-    </section>
+<div class="topline">Queens & Brooklyn, NY · Call to book: (718) 675-2646</div>
 
-    <div class="ticker" aria-label="Salon services">
-      <div class="ticker-track">
-        <span>BRAIDS</span> ✦ <span>TWISTS</span> ✦ <span>CORNROWS</span> ✦ <span>NATURAL HAIR CARE</span> ✦ <span>YOUR CROWN, OUR CARE</span> ✦
-        <span>BRAIDS</span> ✦ <span>TWISTS</span> ✦ <span>CORNROWS</span> ✦ <span>NATURAL HAIR CARE</span> ✦ <span>YOUR CROWN, OUR CARE</span> ✦
-      </div>
-    </div>
+<header>
+<nav class="nav" aria-label="Main navigation">
+<a class="brand" href="#home">
+<span class="mark">S</span>
+<span class="brandname">Shedaat Professional<small>AFRICAN SALON</small></span>
+</a>
+<div class="links">
+<a href="#services">Services</a>
+<a href="#gallery">Styles</a>
+<a href="#locations">Locations</a>
+<a class="btn" href="tel:7186752646">Call to Book</a>
+</div>
+</nav>
+</header>
 
-    <section class="services" id="services">
-      <div class="section-head reveal">
-        <div class="eyebrow">What we do</div>
-        <h2>Styles made for you.</h2>
-        <p>From everyday protective styles to creative braided looks, call us to discuss the style you want and its price.</p>
-      </div>
-      <div class="service-grid">
-        <article class="service-card reveal"><div class="number">01 / STYLE</div><h3>Braids</h3><p>Classic and creative braided styles for different looks and occasions.</p></article>
-        <article class="service-card reveal"><div class="number">02 / STYLE</div><h3>Twists</h3><p>Protective twist styles with a neat, beautiful finish.</p></article>
-        <article class="service-card reveal"><div class="number">03 / STYLE</div><h3>Cornrows</h3><p>Clean parts, detailed patterns, and stylish cornrow designs.</p></article>
-        <article class="service-card reveal"><div class="number">04 / CARE</div><h3>Natural Hair Care</h3><p>Care for your natural hair. Call to ask which services are available.</p></article>
-      </div>
-    </section>
+<main>
+<section class="hero" id="home">
+<div class="hero-inner">
+<div>
+<div class="eyebrow">Beauty · Culture · Confidence</div>
+<h1>Your hair.<br>Your beauty.<br><em>Your crown.</em></h1>
+<p>Beautiful braids, twists, cornrows, and natural hair care — with three convenient salon locations serving Queens and Brooklyn.</p>
+<div class="actions">
+<a class="btn" href="tel:7186752646">☎ Call to Book</a>
+<a class="btn light" href="#gallery">Explore Hairstyles</a>
+</div>
+<p style="font-size:.86rem">Appointments are booked by phone. Call to ask about availability and pricing.</p>
+</div>
 
-    <section id="styles">
-      <div class="section-head reveal">
-        <div class="eyebrow">The style gallery</div>
-        <h2>Find your next look.</h2>
-        <p>Real hairstyle photos from the salon’s collection. Call to ask about availability, timing, and pricing.</p>
-      </div>
-      <div class="gallery-grid">
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-long-braids.jpeg" alt="Long braided hairstyle" loading="lazy"><div class="gallery-label"><small>01 / Braids</small>Long Braids</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-long-box-braids.jpeg" alt="Long box braids" loading="lazy"><div class="gallery-label"><small>02 / Protective style</small>Box Braids</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-geometric-cornrows.jpeg" alt="Geometric cornrow pattern" loading="lazy"><div class="gallery-label"><small>03 / Cornrows</small>Geometric Cornrows</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-heart-cornrows.jpeg" alt="Cornrows with heart design" loading="lazy"><div class="gallery-label"><small>04 / Creative style</small>Heart Cornrows</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-curved-cornrows.jpeg" alt="Curved cornrow design" loading="lazy"><div class="gallery-label"><small>05 / Cornrows</small>Curved Cornrows</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-orange-braids.jpeg" alt="Orange braided hairstyle" loading="lazy"><div class="gallery-label"><small>06 / Color style</small>Color Braids</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-braided-bun.jpeg" alt="Braided bun hairstyle" loading="lazy"><div class="gallery-label"><small>07 / Updo</small>Braided Bun</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-cornrows-bun.jpeg" alt="Cornrows styled into a bun" loading="lazy"><div class="gallery-label"><small>08 / Updo</small>Cornrows Bun</div></a>
-        <a class="gallery-card reveal" href="tel:7186752646"><img src="style-sunflower-braids.jpeg" alt="Braids with a creative patterned design" loading="lazy"><div class="gallery-label"><small>09 / Signature look</small>Creative Braids</div></a>
-      </div>
-    </section>
+<div class="hero-photo">
+<img src="images/style-long-braids.jpeg" alt="Long braided hairstyle from the salon gallery" onerror="this.onerror=null;this.src='style-long-braids.jpeg'">
+<div class="tag">✧ Braided with care</div>
+</div>
+</div>
+</section>
 
-    <section class="booking">
-      <div class="booking-inner reveal">
-        <div class="eyebrow">Ready for your next style?</div>
-        <h2>Let’s get you looking your best.</h2>
-        <p>Booking is by phone. Call us to discuss your hairstyle, pricing, and which location works best for you.</p>
-        <a class="button" href="tel:7186752646">Call 718-675-2646</a>
-      </div>
-    </section>
+<section class="services" id="services">
+<div class="container">
+<div class="heading">
+<div class="eyebrow">What we do</div>
+<h2>Salon Services</h2>
+<p>Call to discuss the style you want and confirm current prices and availability.</p>
+</div>
 
-    <section class="locations" id="locations">
-      <div class="section-head reveal">
-        <div class="eyebrow">Come visit us</div>
-        <h2>Three locations. One salon family.</h2>
-        <p>Choose the location that works best for you. Call before visiting to confirm availability.</p>
-      </div>
-      <div class="location-grid">
-        <article class="location-card reveal">
-          <div class="tag">Queens · Location 01</div>
-          <h3>Richmond Hill</h3>
-          <p>104-65 Atlantic Ave<br>Richmond Hill, NY 11418</p>
-          <a class="button" href="tel:7186752646">Call to Book</a><br>
-          <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=104-65+Atlantic+Ave+Richmond+Hill+NY+11418">Get Directions ↗</a>
-        </article>
-        <article class="location-card reveal">
-          <div class="tag">Brooklyn · Location 02</div>
-          <h3>Linden Boulevard</h3>
-          <p>2468 Linden Blvd<br>Brooklyn, NY 11208</p>
-          <a class="button" href="tel:7186752646">Call to Book</a><br>
-          <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2468+Linden+Blvd+Brooklyn+NY+11208">Get Directions ↗</a>
-        </article>
-        <article class="location-card reveal">
-          <div class="tag">Queens · Location 03</div>
-          <h3>Atlantic Avenue</h3>
-          <p>107-25 Atlantic Ave<br>Richmond Hill, NY 11418</p>
-          <a class="button" href="tel:7186752646">Call to Book</a><br>
-          <a class="map-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=107-25+Atlantic+Ave+Richmond+Hill+NY+11418">Get Directions ↗</a>
-        </article>
-      </div>
-    </section>
-  </main>
+<div class="service-grid">
+<article class="service"><div class="icon">✦</div><h3>Braids</h3><p>Protective braided styles, from classic looks to detailed designs.</p></article>
+<article class="service"><div class="icon">〰</div><h3>Twists</h3><p>Stylish twists for everyday wear and special occasions.</p></article>
+<article class="service"><div class="icon">✧</div><h3>Cornrows</h3><p>Clean parts, creative patterns, and detailed designs.</p></article>
+<article class="service"><div class="icon">♡</div><h3>Natural Hair Care</h3><p>Care and styling for natural hair. Ask about available options.</p></article>
+<article class="service"><div class="icon">✿</div><h3>Makeup Services</h3><p>Makeup services and beauty looks. Call to confirm availability.</p></article>
+<article class="service"><div class="icon">✦</div><h3>Nails & Pedicure</h3><p>Nail technology, manicure, and pedicure services listed on the salon card.</p></article>
+<article class="service"><div class="icon">❋</div><h3>Eyelashes</h3><p>Ask about available lash services and beauty options.</p></article>
+<article class="service"><div class="icon">✧</div><h3>Beauty Products</h3><p>Quality hair, accessories, makeup kits, jewelry, and personal care essentials.</p></article>
+</div>
+</div>
+</section>
 
-  <footer class="footer">
-    <div><strong>SHEDAAT PROFESSIONAL AFRICAN SALON</strong><br>Queens & Brooklyn, New York</div>
-    <a href="tel:7186752646">718-675-2646</a>
-    <div>© <span id="year"></span> Shedaat Salon. All rights reserved.</div>
-  </footer>
+<section class="gallery" id="gallery">
+<div class="container">
+<div class="heading">
+<div class="eyebrow">Real salon styles</div>
+<h2>Find Your Next Look</h2>
+<p>Browse the hairstyle photos uploaded to this GitHub project.</p>
+</div>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-    const revealItems = document.querySelectorAll(".reveal");
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      revealItems.forEach((item) => observer.observe(item));
-    } else {
-      revealItems.forEach((item) => item.classList.add("visible"));
-    }
-  </script>
+<div class="gallery-grid">
+<article class="photo"><img loading="lazy" src="images/style-long-braids.jpeg" alt="Long braids" onerror="this.onerror=null;this.src='style-long-braids.jpeg'"><p>Long Braids</p></article>
+<article class="photo"><img loading="lazy" src="images/style-long-box-braids.jpeg" alt="Long box braids" onerror="this.onerror=null;this.src='style-long-box-braids.jpeg'"><p>Long Box Braids</p></article>
+<article class="photo"><img loading="lazy" src="images/style-geometric-cornrows.jpeg" alt="Geometric cornrows" onerror="this.onerror=null;this.src='style-geometric-cornrows.jpeg'"><p>Geometric Cornrows</p></article>
+<article class="photo"><img loading="lazy" src="images/style-heart-cornrows.jpeg" alt="Heart cornrows" onerror="this.onerror=null;this.src='style-heart-cornrows.jpeg'"><p>Heart Cornrows</p></article>
+<article class="photo"><img loading="lazy" src="images/style-curved-cornrows.jpeg" alt="Curved cornrows" onerror="this.onerror=null;this.src='style-curved-cornrows.jpeg'"><p>Curved Cornrows</p></article>
+<article class="photo"><img loading="lazy" src="images/style-braided-bun.jpeg" alt="Braided bun" onerror="this.onerror=null;this.src='style-braided-bun.jpeg'"><p>Braided Bun</p></article>
+<article class="photo"><img loading="lazy" src="images/style-braided-buns.jpeg" alt="Braided buns" onerror="this.onerror=null;this.src='style-braided-buns.jpeg'"><p>Braided Buns</p></article>
+<article class="photo"><img loading="lazy" src="images/style-cornrows-bun.jpeg" alt="Cornrows bun" onerror="this.onerror=null;this.src='style-cornrows-bun.jpeg'"><p>Cornrows & Bun</p></article>
+<article class="photo"><img loading="lazy" src="images/style-orange-braids.jpeg" alt="Orange braids" onerror="this.onerror=null;this.src='style-orange-braids.jpeg'"><p>Colorful Braids</p></article>
+<article class="photo"><img loading="lazy" src="images/style-sunflower-braids.jpeg" alt="Braided style with sunflower backdrop" onerror="this.onerror=null;this.src='style-sunflower-braids.jpeg'"><p>Creative Braided Style</p></article>
+</div>
+
+<p class="note">These are intended to be your uploaded salon photos, not AI-generated images. If one does not load, check that the filename matches exactly.</p>
+</div>
+</section>
+
+<section class="extras">
+<div class="container">
+<div class="heading">
+<div class="eyebrow">More beauty essentials</div>
+<h2>More Than Hair</h2>
+<p>Our salon card also lists the following services and products. Call ahead to check what is available at each location.</p>
+</div>
+<div class="pills">
+<span class="pill">Quality Hair</span>
+<span class="pill">Hair Accessories</span>
+<span class="pill">Barbing Services</span>
+<span class="pill">Makeup Kits</span>
+<span class="pill">Beauty Essentials</span>
+<span class="pill">Nail Technology</span>
+<span class="pill">Jewelry</span>
+<span class="pill">Personal Care Products</span>
+</div>
+</div>
+</section>
+
+<section class="locations" id="locations">
+<div class="container">
+<div class="heading">
+<div class="eyebrow">Visit us</div>
+<h2>Three Convenient Locations</h2>
+<p>Choose the location that works best for you. Call before visiting to book your appointment.</p>
+</div>
+<div class="location-grid">
+<article class="location">
+<div class="num">01</div>
+<h3>Richmond Hill · Queens</h3>
+<p>104-65 Atlantic Ave<br>Richmond Hill, NY 11418</p>
+<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=104-65+Atlantic+Ave+Richmond+Hill+NY+11418">Get Directions ↗</a>
+</article>
+<article class="location">
+<div class="num">02</div>
+<h3>Brooklyn</h3>
+<p>2468 Linden Blvd<br>Brooklyn, NY 11208</p>
+<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=2468+Linden+Blvd+Brooklyn+NY+11208">Get Directions ↗</a>
+</article>
+<article class="location">
+<div class="num">03</div>
+<h3>Richmond Hill · Queens</h3>
+<p>107-25 Atlantic Ave<br>Richmond Hill, NY 11418</p>
+<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=107-25+Atlantic+Ave+Richmond+Hill+NY+11418">Get Directions ↗</a>
+</article>
+</div>
+</div>
+</section>
+
+<section class="callout">
+<div class="container">
+<div class="eyebrow">Ready for a new look?</div>
+<h2>Let's get you looking beautiful.</h2>
+<p>Call Shedaat Professional African Salon to book and ask about service prices.</p>
+<a class="btn" href="tel:7186752646">☎ Call (718) 675-2646</a>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="foot">
+<div>
+<a class="brand" href="#home">
+<span class="mark">S</span>
+<span class="brandname" style="color:white">Shedaat Professional<small style="color:#f3c4d5">AFRICAN SALON</small></span>
+</a>
+<p>Beauty, culture, and confidence in Queens and Brooklyn, New York.</p>
+</div>
+<div class="footlinks">
+<a href="#services">Services</a>
+<a href="#gallery">Hairstyles</a>
+<a href="#locations">Locations</a>
+<a href="tel:7186752646">Call us</a>
+</div>
+</div>
+<div class="copyright">© <span id="year"></span> Shedaat Professional African Salon. All rights reserved.</div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
-'''
-
-path = Path("/mnt/data/index.html")
-path.write_text(html, encoding="utf-8")
-print(f"Created {path} ({len(html):,} characters)")
